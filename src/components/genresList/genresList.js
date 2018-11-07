@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { getGenreList } from '../../duck/moviesListReducer';
+import { getGenreList, getSimilarMovies } from '../../duck/moviesListReducer';
+
 const _ = require('lodash');
 
 class GenresList extends Component {
   constructor(props) {
     super(props);
     this.state = { 
-      getGenreList: []  
+      genreList: [],
+      similarList: [],
+      selectGenreID: '',
     };
     this.handleGetGenreMovies = this.handleGetGenreMovies.bind(this);
   }
@@ -15,39 +18,67 @@ class GenresList extends Component {
   componentDidMount() {
     this.props.getGenreList()
     .then((response) => {
-      console.log(response.value.data.genres)
-      this.setState({ getGenreList: response.value.data.genres })
+      // console.log(response.value.data.genres)
+      this.setState({ genreList: response.value.data.genres })
     })
+    .catch((error) => {
+      console.log(`Danger! ${ error }`)
+    });
   }
 
-  handleGetGenreMovies(genre) {
-    console.log(`genre${ genre }`)
-    console.log('hit')
+  handleGetGenreMovies(id) {
+    console.log(' id:', id)
+    this.setState({ selectGenreID: id });
+  }
+
+  getSelectGenres = () => {
+    let { selectGenreID } = this.state;
+    // console.log(`selectGenreID: ${ selectGenreID }`);
+    this.props.getSimilarMovies(selectGenreID)
+    .then((response) => {
+      // console.log(response.value.data.results)
+      this.setState({ similarList: response.value.data.results })
+    })
+    .catch((error) => {
+      console.log(`Danger! ${ error }`)
+    });
   }
 
   render() {
-    let { getGenreList } = this.state
-    console.log(getGenreList);
+    let { genreList, similarList } = this.state
+    console.log(this.state);
 
-
-    let displayGenreList = getGenreList.map((value, index) => {
+    let displayGeresList = genreList.map((value, index) => {
       // console.log(value, index)
-      
       return(
-          <option onChange={ () => this.handleGetGenreMovies(value.name) }>{value.name}</option>
+        <option value={ value.id }>{ value.name }</option>
       )
     })
 
+    let displaySimlarList = similarList.map((value, index) => {
+      console.log(value, index)
+      return(
+        <div className='trendingBox'>
+          <p>{ value.title }</p>
+          <img   className='imageBox' src={`https://image.tmdb.org/t/p/w500` + value.poster_path } alt='broken'></img>
+          <p>{ value.vote_average }</p>
+        </div>
+      )
+    })
+
+
+    
+
     return (
       <div>
-        
         <p>GenresList</p>
-       
-        <select>
-          { displayGenreList }
-        </select>
-
-     
+        <form>
+          <select onChange={ (e) => this.handleGetGenreMovies(e.target.value) }>
+            { displayGeresList }
+          </select>
+          <button onClick={ () => this.getSelectGenres() }>Seach</button>
+        </form>
+        { displaySimlarList }
       </div>    
     );
   }
@@ -57,4 +88,4 @@ function mapStateToProps(state) {
   return state
 }
 
-export default connect(mapStateToProps, { getGenreList })(GenresList);
+export default connect(mapStateToProps, { getGenreList, getSimilarMovies })(GenresList);
