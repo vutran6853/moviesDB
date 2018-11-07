@@ -1,0 +1,17 @@
+$imageHeight: 100px;
+$imageWidth: 100px;
+$backgound: red;
+$border: 1px solid blue;
+
+.trendingBox {
+  border: $border;
+
+  p {
+    background-color: $backgound;
+    
+  }
+  .imageBox {
+    height: $imageHeight;
+    width: $imageWidth;
+  }
+}

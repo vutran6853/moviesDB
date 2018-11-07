@@ -1,28 +1,44 @@
 import axios from 'axios';
 
+const movies_key = process.env.REACT_APP_MOVIES_KEY;
+
 //// Inital Value
-const MOVIESLIST = 'MOVIESLIST';
+const TRENDINGLIST = 'TRENDINGLIST';
+const GENRELIST = 'GENRELIST';
 
 //// Initial State
 const initialState = {
-  moviesList: []
+  trendingMoviesList: [],
+  genreList: [],
 }
 
 //// Initial Action Creator for Payload
-export function getAllCoinData() {
+export function trendingMoviesList() {
   return {
-      type: MOVIESLIST,
-      payload: axios.get('https://api.iextrading.com/1.0/ref-data/symbols')
+      type: TRENDINGLIST,
+      payload: axios.get(`https://api.themoviedb.org/3/discover/movie?api_key=${ movies_key }`)
+  }
+}
+
+export function getGenreList() {
+  return {
+    type: GENRELIST,
+    payload: axios.get(`https://api.themoviedb.org/3/genre/movie/list?api_key=${ movies_key }&language=en-US`)
   }
 }
 
 //// Handle state changes
-export default function cryptoReducer(state = initialState, action) {
+export default function moviesListReducer(state = initialState, action) {
   switch(action.type) {
-    case `${ MOVIESLIST }_FULFILLED`: 
+    case `${ TRENDINGLIST }_FULFILLED`: 
     return {
         ...state,
-        moviesList: action.payload.data
+        trendingMoviesList: action.payload.data.results
+    }
+    case `${ GENRELIST }_FULFILLED`:
+    return {
+      ...state,
+      genreList: action.payload.data
     }
     default:
     return state;
