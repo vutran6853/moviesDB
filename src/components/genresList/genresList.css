@@ -1,0 +1,7 @@
+.trendingBox {
+  border: 1px solid blue; }
+  .trendingBox p {
+    background-color: red; }
+  .trendingBox .imageBox {
+    height: 100px;
+    width: 100px; }

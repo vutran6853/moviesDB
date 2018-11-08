@@ -6,12 +6,14 @@ const movies_key = process.env.REACT_APP_MOVIES_KEY;
 const TRENDINGLIST = 'TRENDINGLIST';
 const GENRELIST = 'GENRELIST';
 const SIMILARMOVIES = 'SIMILARMOVIES';
+const TVPOPULAR = 'TVPOPULAR';
 
 //// Initial State
 const initialState = {
   trendingMoviesList: [],
   genreList: [],
   similarMoviesList: [],
+  tvpopular: []
 }
 
 //// Initial Action Creator for Payload
@@ -30,10 +32,17 @@ export function getGenreList() {
 }
 
 export function getSimilarMovies(id) {
-  console.log(id)
+  console.log(id);
   return {
     type: SIMILARMOVIES,
     payload: axios.get(`https://api.themoviedb.org/3/movie/${ id }/similar?api_key=${ movies_key }&language=en-US&page=1`)
+  }
+}
+
+export function getTVpopular(id) {
+  return {
+    type: TVPOPULAR,
+    payload: axios.get(`https://api.themoviedb.org/3/tv/popular?api_key=${ movies_key }&language=en-US&page=${ id }`)
   }
 }
 
@@ -54,6 +63,11 @@ export default function moviesListReducer(state = initialState, action) {
     return {
       ...state,
       similarMoviesList: action.payload.data
+    }
+    case `${ TVPOPULAR }_FULFILLED`:
+    return {
+      ...state,
+      tvpopular: action.payload.data
     }
     default:
     return state;

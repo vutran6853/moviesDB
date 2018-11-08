@@ -1,5 +1,4 @@
-$background-color: green;
-$pColor: red;
+@import '../style/style.scss';
 
 .box1 {
     background-color: $background-color;

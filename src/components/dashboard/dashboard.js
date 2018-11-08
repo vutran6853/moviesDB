@@ -9,7 +9,6 @@ class Dashboard extends Component {
     };
   }
   render() {
-    console.log(`this.props`, this.props)
     return (
       <div className='box1'>
         <p>Dashboard</p>

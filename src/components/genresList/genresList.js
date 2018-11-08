@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { getGenreList, getSimilarMovies } from '../../duck/moviesListReducer';
 
-const _ = require('lodash');
+let _ = require('lodash');
 
 class GenresList extends Component {
   constructor(props) {
@@ -27,10 +27,10 @@ class GenresList extends Component {
   }
 
   handleGetGenreMovies(id) {
-    console.log(' id:', id)
     this.setState({ selectGenreID: id });
   }
 
+  ////  Get similar movies list from selectdrop 
   getSelectGenres = () => {
     let { selectGenreID } = this.state;
     // console.log(`selectGenreID: ${ selectGenreID }`);
@@ -53,21 +53,19 @@ class GenresList extends Component {
       return(
         <option value={ value.id }>{ value.name }</option>
       )
-    })
+    });
 
     let displaySimlarList = similarList.map((value, index) => {
-      console.log(value, index)
+      // console.log(value, index)
       return(
         <div className='trendingBox'>
           <p>{ value.title }</p>
-          <img   className='imageBox' src={`https://image.tmdb.org/t/p/w500` + value.poster_path } alt='broken'></img>
-          <p>{ value.vote_average }</p>
+          <img className='imageBox' src={`https://image.tmdb.org/t/p/w500` + value.poster_path } alt='broken'></img>
+          <p>Rate: { value.vote_average }</p>
+          <p>{ value.overview }</p>
         </div>
       )
-    })
-
-
-    
+    });
 
     return (
       <div>

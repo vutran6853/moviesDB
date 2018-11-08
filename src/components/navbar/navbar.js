@@ -7,7 +7,7 @@ class NavBar extends Component {
     return (
       <div>
         <Link to='/'>
-          <button>home</button>
+          <button>Home</button>
         </Link>
 
         <Link to='/movies'>
@@ -16,6 +16,10 @@ class NavBar extends Component {
 
         <Link to='/genres'>
           <button>Genres</button>
+        </Link>
+
+        <Link to='/tv'>
+          <button>TV</button>
         </Link>
 
       </div>

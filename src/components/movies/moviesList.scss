@@ -1,7 +1,4 @@
-$imageHeight: 100px;
-$imageWidth: 100px;
-$backgound: red;
-$border: 1px solid blue;
+@import '../style/style.scss';
 
 .trendingBox {
   border: $border;
